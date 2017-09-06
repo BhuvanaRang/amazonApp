@@ -23,15 +23,17 @@ public class AmazonAutomationScript extends ReUsableMethods{
 	public static String searchAndAdd(WebDriver driver) throws Exception {
 
 		startReport("searchAndAdd", "C:\\Users\\Bhuvana\\Desktop\\amazon\\Report");
-		driver = new FirefoxDriver(); 
 		try{
 
 			driver.get("https://www.amazon.com/");
 
+			Thread.sleep(2000);
+			
 			String enteredText="iphone 6";
 			WebElement enterText = driver.findElement(byLocator("enterText"));
 			enterText(enterText,enteredText, "Enter the text");
 
+			Thread.sleep(2000);
 			WebElement searchButton = driver.findElement(byLocator("searchButton"));
 			clickButton(searchButton, "Click the search button");
 
@@ -46,11 +48,16 @@ public class AmazonAutomationScript extends ReUsableMethods{
 			Thread.sleep(2000);
 
 			// add insurance
-			WebElement addInsurance = driver.findElement(byLocator("addInsurance"));
-			if(addInsurance != null) {
-				addInsurance.click();
-				Thread.sleep(2000);
+			try {
+				WebElement addInsurance = driver.findElement(byLocator("addInsurance"));
+				if(addInsurance != null) {
+					addInsurance.click();
+					Thread.sleep(2000);
+				}	
+			} catch(Exception e){
+				
 			}
+			
 
 			String cartText= driver.findElement(byLocator("cartIcon")).getText();
 			String actual = cartText;
@@ -71,12 +78,14 @@ public class AmazonAutomationScript extends ReUsableMethods{
 
 	//TC2  Check all the list in <Main Tab> available in the page
 
-	public static void checkAllDropDown(WebDriver driver) throws Exception {
+	public static String checkAllDropDown(WebDriver driver) throws Exception {
 
 		startReport("checkAllDropDown", "C:\\Users\\Bhuvana\\Desktop\\amazon\\Report");
 		//System.setProperty("webdriver.gecko.driver", "C:\\Users\\Bhuvana\\Downloads\\geckodriver-v0.18.0-win32\\geckodriver.exe");
 		try{
 
+			result = "Fail";
+			
 			driver.get("https://www.amazon.com/");
 
 			Actions action=new Actions(driver);
@@ -88,7 +97,7 @@ public class AmazonAutomationScript extends ReUsableMethods{
 			boolean actual=yourAmazonLink.isEnabled()&&yourAmazonLink.isDisplayed();
 
 			boolean expected = true;
-			String result = verify(expected,actual);
+			result = verify(expected,actual);
 			System.out.println(result);
 			Update_Report( result, "Your Amazon link should be clickable",  "Execution Completed");
 
@@ -98,10 +107,12 @@ public class AmazonAutomationScript extends ReUsableMethods{
 			result = verify(expected,actual);
 			System.out.println(result);
 			Update_Report( result, "Your Today's deals should be clickable",  "Execution Completed");
-
+			return result;	
 
 		} catch(Exception e) {
+			
 			e.printStackTrace();
+			return result;
 		} finally {
 			bw.close();
 		}
@@ -309,6 +320,7 @@ public class AmazonAutomationScript extends ReUsableMethods{
 			expected.add("Wine");
 
 			result=verify(expected, actual);
+			System.out.println(result);
 			Update_Report( result, "It shows the All menu search dropdown List",  "Execution Completed");
 			return result;
 
@@ -328,7 +340,6 @@ public class AmazonAutomationScript extends ReUsableMethods{
 	public static String checkCartEmpty(WebDriver driver) throws Exception {
 
 		startReport("checkCartEmpty", "C:\\Users\\Bhuvana\\Desktop\\amazon\\Report");
-		driver = new FirefoxDriver(); 
 		try{
 
 			driver.get("https://www.amazon.com/");
@@ -343,7 +354,11 @@ public class AmazonAutomationScript extends ReUsableMethods{
 			WebElement iphoneModelSelect = driver.findElement(byLocator("iphoneModelSelect"));
 			clickButton(iphoneModelSelect, "click the iphone 6s 64GB");
 
-			WebElement addToCartButton = driver.findElement(byLocator("addToCartButton"));
+			Thread.sleep(2000);
+						
+			WebElement addToCartButton = (new WebDriverWait(driver, 10))
+					.until(ExpectedConditions.elementToBeClickable(byLocator("addToCartButton")));
+			
 			clickButton(addToCartButton, "iphone 6s 64GB is added to the cart ");
 			Thread.sleep(2000);
 

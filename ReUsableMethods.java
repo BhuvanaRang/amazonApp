@@ -27,6 +27,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import practiceprograms.ExcelFile;
 
@@ -299,7 +300,17 @@ public class ReUsableMethods {
 			return new ChromeDriver();
 		} else if (browser.equalsIgnoreCase("ie")) {
 			System.setProperty("webdriver.ie.driver", "C:\\Users\\Bhuvana\\Downloads\\IEDriverServer.exe");
-			return new InternetExplorerDriver();
+			DesiredCapabilities ieCapabilities = DesiredCapabilities.internetExplorer();
+
+			//ieCapabilities.setCapability("initialBrowserUrl", "https://localhost:25402");
+			ieCapabilities.setCapability("nativeEvents", false);    
+			ieCapabilities.setCapability("unexpectedAlertBehaviour", "accept");
+			ieCapabilities.setCapability("ignoreProtectedModeSettings", true);
+			ieCapabilities.setCapability("disable-popup-blocking", true);
+			ieCapabilities.setCapability("enablePersistentHover", true);
+
+			return new InternetExplorerDriver(ieCapabilities);
+			//return new InternetExplorerDriver();
 		}
 		return null;
 	}

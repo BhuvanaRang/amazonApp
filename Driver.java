@@ -10,7 +10,7 @@ public class Driver {
 	
 		public static void main(String[] args) throws Exception {
 			
-			String[] browsers = {"chrome"/*, "chrome", "ie"*/};
+			String[] browsers = {/*"firefox",*/ "chrome"/*, "ie"*/};
 			
 			List<Row> testCases = AmazonAutomationScript.loadTestCases("C:\\Users\\Bhuvana\\Desktop\\amazon\\Test Cases.xls");			
 			for (String browser : browsers) {
